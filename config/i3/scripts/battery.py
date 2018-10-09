@@ -84,9 +84,7 @@ def color(percent):
         return "color='#FFFF00'"
     if percent < 70:
         return "color='#FFFF33'"
-    if percent < 80:
-        return "color='#FFFF66'"
-    return ""
+    return "color='#FFFF66'"
 #    return "#FFFFFF"
 
 form +=  '<span {} font="FontAwesome">{}</span>'

@@ -27,9 +27,10 @@ bindsym --release Print exec --no-startup-id scrot
 bindsym --release Shift+Print exec --no-startup-id scrot -s
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +3%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -3%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% ; exec pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% ; exec pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle; exec pkill -SIGRTMIN+10 i3blocks
+
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
@@ -45,12 +46,11 @@ bindsym XF86AudioPrev  exec playerctl previous
 bindsym $mod+Return exec termite
 
 # kill focused window
-bindsym $mod+w kill
+bindsym $mod+Shift+q kill
 bindsym $mod+Shift+w exec xdotool getactivewindow windowkill
 
 # start dmenu/passmenu
-bindsym $mod+d exec dmenu_run -fn "inconsolata-11" -h 30 -q -sb "#da4939" -sf "#000000" -p "RUN" -i
-bindsym $mod+Shift+d exec passmenu
+bindsym $mod+d exec dmenu_run -p "Run" -sb "#da4939" -sf "#00171f" 
 
 # change focus
 bindsym $mod+h focus left
@@ -134,8 +134,6 @@ bar {
     status_command i3blocks -c $HOME/.config/i3/i3blocks
     height 30
 
-    mode hide
-    modifier $mod
 
         colors {
                 background #00171f
@@ -149,5 +147,5 @@ bar {
         }
 }
 
-exec --no-startup-id feh --bg-scale --no-fehbg "$HOME/dotfiles/background/background.jgp"
+exec --no-startup-id feh --bg-scale --no-fehbg "$HOME/dotfiles/background/background.jpg"
 exec compton -b

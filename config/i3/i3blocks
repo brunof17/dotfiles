@@ -36,8 +36,17 @@ interval=once
 signal=10
 color="e9c46a"
 
+[internet]
+markup=pango
+command=$HOME/dotfiles/config/i3/scripts/internet.py
+interval=60
+color="e9c46a"
+
 [battery]
+markup=pango
+command=$HOME/dotfiles/config/i3/scripts/battery.py
 interval=30
+color="e9c46a"
 
 [date]
 command=date '+ %d %b %Y'
@@ -45,6 +54,6 @@ interval=5
 color="14ad4f"
 
 [time]
-command=date '+ %H:%M'
+command=date '+  %H:%M:%S'
 color="02d6a8"
-interval=5
+interval=1
