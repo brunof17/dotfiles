@@ -1,0 +1,10 @@
+[user]
+	name = brunof17
+    email = bruno.ferreira.96@hotmail.com
+
+[color]
+    ui = true
+
+[core]
+    editor = vim
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+for FILE in *; do
+    [[ -f $FILE ]] && ln -sf $HOME/dotfiles/$FILE $HOME/.$FILE
+done
+
+for FILE in config/*; do
+    ln -sf $HOME/dotfiles/$FILE $HOME/.config
+done
