@@ -1,8 +1,52 @@
 #!/bin/bash
-for FILE in *; do
-    [[ -f $FILE ]] && ln -sf $HOME/dotfiles/$FILE $HOME/.$FILE
-done
 
-for FILE in config/*; do
-    ln -sf $HOME/dotfiles/$FILE $HOME/.config
+#TODO: Add parameters to install file:
+# -f for files only
+# -c for config files only
+# no parameters should install all
+
+#Save current directory
+dir=$PWD
+
+#Check if dotfiles is present in $HOME
+
+if [ -d $HOME/dotfiles ]; then
+    echo "Correct dotfiles location, starting installing process"
+else
+    echo "Dotfiles should be present in home directory! Please change it before trying to install again"
+    exit 1
+fi
+
+# Check if Zsh is installed
+if [ -d ~/.oh-my-zsh ]; then
+	echo "oh-my-zsh is already installed, skipping"
+else
+    echo "Installing oh-my-zsh"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    echo "Copying theme file"
+    cp $HOME/dotfiles/zsh-theme/* $HOME/.oh-my-zsh/themes
+fi
+
+
+# Check if we need to change directory to copy files
+dir_change=false
+if [ $dir != $HOME/dotfiles ]; then
+    echo "Changing dir to the correct one"
+    cd $HOME/dotfiles
+    dir_change=true
+fi
+
+
+#Transfer normal files
+for FILE in *; do
+    if [ "README.md" != $FILE ]; then
+        ln -sf $HOME/dotfiles/$FILE $HOME/.$FILE
+    fi
 done
+echo "Copied files to home dir"
+
+# Check if dir changed for normal file transfer
+if [ "$dir_change" = true ]; then
+    echo "Falling back to the original dir"
+    cd $dir
+fi
