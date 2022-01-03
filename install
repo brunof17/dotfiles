@@ -1,14 +1,9 @@
 #!/bin/bash
 
-#TODO: Add parameters to install file:
-# -f for files only
-# -c for config files only
-# no parameters should install all
-
-#Save current directory
+# Save current directory
 dir=$PWD
 
-#Check if dotfiles is present in $HOME
+# Check if dotfiles is present in $HOME
 
 if [ -d $HOME/dotfiles ]; then
     echo "Correct dotfiles location, starting installing process"
@@ -17,7 +12,13 @@ else
     exit 1
 fi
 
-# Check if Zsh is installed
+# Check if zsh is default shell
+if [ $SHELL != "/usr/bin/zsh" ]; then
+    echo "Zsh should be your default shell. Set it before using install process!"
+    exit 1
+fi
+
+# Check if oh-my-zsh is installed
 if [ -d ~/.oh-my-zsh ]; then
 	echo "oh-my-zsh is already installed, skipping"
 else
@@ -36,11 +37,20 @@ if [ $dir != $HOME/dotfiles ]; then
     dir_change=true
 fi
 
+# Array with files to ignore during transfer
+ignore_files=("README.md" "install" "zsh-theme")
 
-#Transfer normal files
+# Transfer normal files
 for FILE in *; do
-    if [ "README.md" != $FILE ]; then
-        ln -sf $HOME/dotfiles/$FILE $HOME/.$FILE
+    # Check if file is not on ignore list
+    if printf '%s\n' "${ignore_files[@]}" | grep -Fxq $FILE; then
+        :
+    else
+        # Check if file is not already present in the correct location
+        if [ ! -f $HOME/.$FILE ] && [ ! -d $HOME/.$FILE ]; then
+            # Create symbolic link for file
+            ln -s $HOME/dotfiles/$FILE $HOME/.$FILE
+        fi
     fi
 done
 echo "Copied files to home dir"
